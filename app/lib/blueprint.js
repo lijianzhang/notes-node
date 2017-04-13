@@ -1,9 +1,11 @@
 import KoaRouter from 'koa-router';
 
+// 支持的methods
+const METHOD_TYPES = ['head', 'options', 'get', 'put', 'patch', 'post', 'delete'];
+
 const Blueprint = (prefix = '', ...rootMiddleware) => {
   const router = new KoaRouter({ prefix });
-
-  const METHOD_TYPES = ['head', 'options', 'get', 'put', 'patch', 'post', 'delete'];
+  router.use(...rootMiddleware);
 
   function decorateRoter(path, methods, ...middleware) {
     return (target, key, descriptor) => {
@@ -14,17 +16,18 @@ const Blueprint = (prefix = '', ...rootMiddleware) => {
   }
   const methods = {};
   METHOD_TYPES.forEach((method) => {
-    methods[method] = (path, ...middleware) => decorateRoter(path, [method], ...rootMiddleware, ...middleware);
+    methods[method] = (path, ...middleware) => decorateRoter(path, [method], ...middleware);
   });
 
   return {
-    methods: (path, methods = ['get'], ...middleware) => decorateRoter(path, methods, ...rootMiddleware, ...middleware),
     ...methods,
+    methods: (path, methods = ['get'], ...middleware) => decorateRoter(path, methods, ...middleware),
     use: (...arg) => router.use(...arg),
     routes: () => {
       router.stack.reverse();
       return router.routes();
     },
+    redirect: (...arg) => router.redirect(...arg),
     class: (Target) => {
       Target.routes = () => {
         const obj = new Target();
@@ -36,9 +39,10 @@ const Blueprint = (prefix = '', ...rootMiddleware) => {
         return router.routes();
       };
       Target.use = (...arg) => router.use(...arg);
+      Target.allowedMethods = () => router.allowedMethods();
       return Target;
     },
-    allowedMethods: router.allowedMethods,
+    allowedMethods: arg => router.allowedMethods(arg),
   };
 };
 

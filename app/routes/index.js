@@ -1,6 +1,6 @@
 import Api from './api';
 
-function abc (ctx, next) {
+function abc(ctx, next) {
   next();
 }
 

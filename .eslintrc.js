@@ -6,7 +6,7 @@ module.exports = {
     ],
     "rules": {
       "no-param-reassign": 0,
-      "no-shadow": 0
+      "no-shadow": 0,
     },
     "globals": {
         "Blueprint": true
