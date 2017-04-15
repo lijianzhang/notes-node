@@ -1,23 +1,18 @@
-import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
-import redisStore from 'koa-redis';
 import Boom from 'boom';
-import session from 'koa-generic-session';
 import logger from 'koa-logger';
+import App from './lib/App';
 import './lib/blueprint';
+import error from './middlewares/error';
 import routes from './routes';
 import config from './config';
 import './lib/db';
 
-const app = new Koa();
-
-app.keys = ['keys', 'keykeys'];
+const app = new App();
 
 app.use(logger());
 
-app.use(session({
-  store: redisStore({}),
-}));
+app.use(error);
 
 app.use(bodyParser());
 app.use(routes.routes());

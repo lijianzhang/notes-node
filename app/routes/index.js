@@ -12,9 +12,7 @@ export default class Home {
 
   @api.get('/')
   static async index(ctx) {
-    const session = ctx.session;
-    session.num += 1;
-    ctx.body = session;
+    ctx.body = {};
   }
 
   @api.methods('/test', ['get', 'post'])

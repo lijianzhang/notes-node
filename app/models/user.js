@@ -2,7 +2,7 @@
  * @Author: lijianzhang 
  * @Date: 2017-04-12 23:23:01 
  * @Last Modified by: lijianzhang
- * @Last Modified time: 2017-04-14 01:20:25
+ * @Last Modified time: 2017-04-15 19:54:23
  */
 
 import crypto from 'crypto';
@@ -24,8 +24,8 @@ export default class User extends Model {
   async createUser() {
     assert.ok(this.username, 601);
     assert.ok(this.hashPassword, 601);
-    const users = await User.limit(1).find({ username: this.username });
-    if (users.length) {
+    const user = await User.findOne({ username: this.username });
+    if (user) {
       throw new Error(602);
     }
   }
