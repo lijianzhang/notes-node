@@ -2,7 +2,7 @@ import codeMessage from './code';
 
 export default class controller {
   error(code = 404) {
-    return {
+    this.ctx.body = {
       code,
       message: codeMessage[code] || 'error 没有找到对应的状态码',
       status: false,
@@ -10,11 +10,12 @@ export default class controller {
   }
 
   json(result, code = 200) {
-    return {
+    this.ctx.body = {
       status: true,
       code,
       result,
       message: codeMessage[code],
+      token: this.ctx.state.token,
     };
   }
 }

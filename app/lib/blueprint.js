@@ -8,8 +8,14 @@ const Blueprint = (prefix = '', ...rootMiddleware) => {
   router.use(...rootMiddleware);
 
   function decorateRoter(path, methods, ...middleware) {
-    return (target, key, descriptor) => {
-      middleware.push(descriptor.value);
+    return (Target, key, descriptor) => {
+      const func = async (ctx, next) => {
+        const obj = new Target.constructor();
+        obj.ctx = ctx;
+        obj.next = next;
+        await obj[key](ctx, next);
+      };
+      middleware.push(func);
       methods.forEach(method => router[method](path, ...middleware));
       return descriptor;
     };
@@ -30,12 +36,7 @@ const Blueprint = (prefix = '', ...rootMiddleware) => {
     redirect: (...arg) => router.redirect(...arg),
     class: (Target) => {
       Target.routes = () => {
-        const obj = new Target();
         router.stack.reverse();
-        router.stack.forEach((Layer) => {
-          const last = Layer.stack.length - 1;
-          Layer.stack[last] = Layer.stack[last].bind(obj);
-        });
         return router.routes();
       };
       Target.use = (...arg) => router.use(...arg);
