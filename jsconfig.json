@@ -1,9 +1,13 @@
 {
     "compilerOptions": {
-        "module": "es6",
         "target": "es6",
         "sourceMap": true,
         "removeComments": false,
+        "module": "commonjs",
+        "allowSyntheticDefaultImports": true,
         "experimentalDecorators": true
-    }
+    },
+    "exclude": [
+        "node_modules"
+    ]
 }

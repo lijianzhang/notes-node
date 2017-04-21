@@ -1,3 +1,10 @@
+/*
+ * @Author: lijianzhang
+ * @Date: 2017-04-21 22:34:29
+ * @Last Modified by: lijianzhang
+ * @Last Modified time: 2017-04-22 00:51:57
+ */
+
 export default {
   100: 'continue',
   101: 'switching protocols',
@@ -58,6 +65,4 @@ export default {
   601: '缺少用户名或密码',
   602: '用户名已存在,请重新输入',
 };
-
-
 

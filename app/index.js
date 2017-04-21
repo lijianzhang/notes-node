@@ -1,3 +1,11 @@
+/*
+ * @Author: lijianzhang
+ * @Date: 2017-04-21 21:35:50
+ * @Last Modified by: lijianzhang
+ * @Last Modified time: 2017-04-21 23:24:55
+ * @flow
+ */
+
 import bodyParser from 'koa-bodyparser';
 import Boom from 'boom';
 import logger from 'koa-logger';

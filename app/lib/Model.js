@@ -1,9 +1,17 @@
+/*
+ * @Author: lijianzhang
+ * @Date: 2017-04-21 22:30:12
+ * @Last Modified by: lijianzhang
+ * @Last Modified time: 2017-04-22 00:53:41
+ * @flow
+ */
+
 import mongorito from 'mongorito';
 import is from 'is_js';
 
 export default class Model extends mongorito.Model {
 
-  constructor(attrs, options) {
+  constructor(attrs?: Object, options?: Object) {
     super(attrs, options);
     this.initSchema();
     this.initVirtuals();
@@ -12,13 +20,6 @@ export default class Model extends mongorito.Model {
   configure() {
     super.configure();
   }
-
-  /**
-   * 
-   * 设置attributes的set, get代理方法
-   * 
-   * @memberOf Model
-   */
 
   /**
    * 初始化的时,处理计算属性
@@ -37,15 +38,20 @@ export default class Model extends mongorito.Model {
       } else if (!Object.getOwnPropertyDescriptor(this, key)) {
         this.setProperty(key);
       }
-      
     });
   }
 
+  /**
+   *
+   * 设置attributes的set, get代理方法
+   *
+   * @memberOf Model
+   */
 
   initSchema() {
     const schema = this.constructor.schema;
     if (schema) {
-      let keys = null;
+      let keys: Array<string> = [];
       if (is.array(schema)) {
         keys = schema;
         keys.forEach(key => this.setProperty(key));
@@ -63,7 +69,7 @@ export default class Model extends mongorito.Model {
     }
   }
 
-  setProperty(key) {
+  setProperty(key: string) {
     Object.defineProperty(this, key, {
       get() {
         return this.get(key);
@@ -97,35 +103,35 @@ export default class Model extends mongorito.Model {
     this.attributes = attrs;
   }
 
-  beforeCreate(fn) {
+  beforeCreate(fn: Function) {
     this.before('create', fn);
   }
 
-  beforeSave(fn) {
+  beforeSave(fn: Function) {
     this.before('save', fn);
   }
 
-  beforeUpdate(fn) {
+  beforeUpdate(fn: Function) {
     this.before('update', fn);
   }
 
-  beforeRemove(fn) {
+  beforeRemove(fn: Function) {
     this.before('remove', fn);
   }
 
-  afterCreate(fn) {
+  afterCreate(fn: Function) {
     this.after('create', fn);
   }
 
-  afterSave(fn) {
+  afterSave(fn: Function) {
     this.after('save', fn);
   }
 
-  afterUpdate(fn) {
+  afterUpdate(fn: Function) {
     this.after('update', fn);
   }
 
-  afterRemove(fn) {
+  afterRemove(fn: Function) {
     this.after('remove', fn);
   }
 }
